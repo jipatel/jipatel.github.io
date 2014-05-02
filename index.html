@@ -1,68 +1,59 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta http-equiv="content-type" content="text/html;charset=utf-8">
-
-    <link rel="stylesheet" type="text/css" href="css/style.css" />
-    <style type="text/css">
-
-.operand { 
-  background: #fff;
-  font: 80px sans-serif;
-  height: 80px;
-  position: relative;
-  text-align: center;
-  width: 720px;
-  margin: 0 auto;  
-}
-
-.operator { 
-  background: #fff;
-  font: 80px sans-serif;
-  height: 80px;
-  position: relative;
-  text-align: center;
-  width: 720px;
-  margin: 0 auto;
-}
-
-hr{
-   width: 30%; 
-  position: relative;
-
-}
-
+    <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <style>
+      html, body, #map-canvas {
+        height: 100%;
+        margin: 0px;
+        padding: 0px
+      }
     </style>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+    <script>
 
-<!-- HTML -->    
+var clubs = [
+			{club:"Driver",lat:33.460609,lon:-111.960657},
+			{club:"3HB",lat:33.458841, lon:-111.959153},
+			{club:"60",lat:33.457271,lon:-111.958881},
+			{club:"putter",lat:33.456659,lon:-111.959091}
+			]
+var map;
+function initialize() {
+  var mapOptions = {
+    zoom: 17,
+    center: new google.maps.LatLng(33.459057, -111.959255),
+    mapTypeId: google.maps.MapTypeId.SATELLITE
+  };
+  map = new google.maps.Map(document.getElementById('map-canvas'),
+      mapOptions);
+
+
+ var flightPlanCoordinates = new Array();
+
+ for (var i = 0; i < clubs.length; i++) {
+ 	console.log(clubs[i]);
+ 	flightPlanCoordinates.push(new google.maps.LatLng(clubs[i].lat,clubs[i].lon));
+ };
+
+  var flightPath = new google.maps.Polyline({
+    path: flightPlanCoordinates,
+    geodesic: true,
+    strokeColor: '#FF0000',
+    strokeOpacity: 1.0,
+    strokeWeight: 1
+  });
+
+  flightPath.setMap(map);  
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
   </head>
   <body>
-    <div class="body">
-      <div class="operand">5</div>
-      <div class="operator">+</div>
-      <div class="operand">2</div>
-      <hr size=8 noshade/>
-      <input id="result" type="number" pattern="[0-9]*" />
-      <hr size=8 noshade/>
-    </div>
-<!--
-      <div id="result" class="operand"></div>
-       <div id="numpad">
-        <ul id="keyboard">
-          <li class="symbol"><span class="off">1</span></li>
-          <li class="symbol"><span class="off">2</span></li>
-          <li class="symbol"><span class="off">3</span></li>
-          <li class="symbol"><span class="off">4</span></li>
-          <li class="symbol"><span class="off">5</span></li>
-          <li class="symbol"><span class="off">6</span></li>
-          <li class="symbol"><span class="off">7</span></li>
-          <li class="symbol"><span class="off">8</span></li>
-          <li class="symbol"><span class="off">9</span></li>
-          <li class="symbol"><span class="off">0</span></li>
-          <li class="delete lastitem">delete</li>
-        </ul>
-        </div>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
-    <script type="text/javascript" src="js/keyboard.js"></script>
- -->  </body>
+    <div id="map-canvas"></div>
+  </body>
 </html>
